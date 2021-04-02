@@ -38,6 +38,7 @@ function update() {
   b_rate.setUint32(0, rate, false);
   NRF.setAdvertising({},{
     showName:false,
+    connectable:false,
     manufacturer:0x0590,
     manufacturerData:[a_battery, a_counter, a_rate],
     interval: 600 // default is 375 - save a bit of power
