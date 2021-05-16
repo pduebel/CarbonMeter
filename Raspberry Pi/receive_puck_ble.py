@@ -1,5 +1,7 @@
 '''Receive advertising data from named device (i.e. puck.js) and input this info, along with
    date and time data, into an sqlite database. Linux only, must be run as root.'''
+import sys
+import os
 import datetime
 
 from bluepy.btle import Scanner, DefaultDelegate
@@ -12,7 +14,7 @@ devices = [
 ];
 
 # Initialise database
-db = DB('test.db')
+db = DB('energy.db')
 db.create_db()
 
 # Gets the actual scanning data  
@@ -34,29 +36,32 @@ class ScanDelegate(DefaultDelegate):
         kW = rate / 800
         
         # Get time info
-        date = datetime.date.today()
-        now = datetime.datetime.now()
-        hour = now.hour
-        minute = now.minute
-        
-        id_number = int(str(now.year)
-                        + str(now.month)
-                        + str(now.day)
-                        + str(now.hour)
-                        + str(now.minute))
+        timestamp = datetime.datetime.now()
+        timestamp = timestamp.replace(second=0, microsecond=0)
         
         # Input to database
-        print (f'ID: {id_number}, Date: {date}, Hour: {hour}, Minute: {minute}, Battery: {battery}, kWh {kWh}, kW: {kW}')
-        data = (id_number, date, hour, minute, battery, kWh, kW)
+        print (f'Timestamp: {timestamp}, Battery: {battery}, kWh {kWh}, kW: {kW}')
+        data = (timestamp, battery, kWh, kW)
         db.insert(data)
+        global tries
+        tries = 0
 
 # Start scanning
 scanner = Scanner().withDelegate(ScanDelegate())
 scanner.clear()
 scanner.start()
+
+tries = 0
+
 # Keep scanning in  10 second chunks
 while True:
     print('Scanning...')
     scanner.process(10)
+    tries += 1
+    # restart script if no data received after 5 loops
+    if tries >= 5:
+        print('Restarting')
+        sys.stdout.flush()
+        os.execv(sys.executable, ['python3'] + sys.argv)
 # in case were wanted to finish, we should call 'stop'
 scanner.stop()

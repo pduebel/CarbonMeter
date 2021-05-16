@@ -46,13 +46,10 @@ class DB:
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS energy (
-                         id int PRIMARY KEY,
-                         date date,
-                         hour int,
-                         minute int,
-                         battery int,
-                         kWh float,
-                         kW float
+                         timestamp TEXT PRIMARY KEY,
+                         battery INTEGER,
+                         kWh FLOAT,
+                         kW FLOAT
                       );''')
         conn.commit()
         conn.close()
@@ -67,12 +64,9 @@ class DB:
         data: tuple
             A tuple containing the energy data to insert/replace into database.
             Expected to contain (in this order):
-                id: int
-                    unique id number, if this already exists in the table then existing data
+                timestamp: str
+                    unique timestamp, if this already exists in the table then existing data
                     will be replaced
-                date: date
-                hour: int
-                minute: int
                 battery: int
                 kWh: float
                 kW: float
@@ -84,7 +78,7 @@ class DB:
         
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
-        c.execute('''REPLACE INTO energy (id, date, hour, minute, battery, kWh, kW)
-                         VALUES (?, ?, ?, ?, ?, ?, ?)''', data)
+        c.execute('''REPLACE INTO energy (timestamp, battery, kWh, kW)
+                         VALUES (?, ?, ?, ?)''', data)
         conn.commit()
         conn.close()
