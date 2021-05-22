@@ -4,6 +4,7 @@ import sys
 import os
 import datetime
 
+import requests
 from bluepy.btle import Scanner, DefaultDelegate
 
 from db import DB
@@ -43,6 +44,8 @@ class ScanDelegate(DefaultDelegate):
         print (f'Timestamp: {timestamp}, Battery: {battery}, kWh {kWh}, kW: {kW}')
         data = (timestamp, battery, kWh, kW)
         db.insert(data)
+        r = requests.post('https://carbon-meter.herokuapp.com/kW-upload', data={'kW': kW})
+        print(r.content)
         global tries
         tries = 0
 
