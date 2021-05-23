@@ -33,8 +33,8 @@ class ScanDelegate(DefaultDelegate):
         rate = int(data[10:], 16)
         
         # Derive power metrics
-        kWh = counter / 800
-        kW = rate / 800
+        kWh = counter / 1000
+        kW = rate / 1000
         
         # Get time info
         timestamp = datetime.datetime.now()
