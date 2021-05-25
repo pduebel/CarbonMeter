@@ -44,8 +44,11 @@ class ScanDelegate(DefaultDelegate):
         print (f'Timestamp: {timestamp}, Battery: {battery}, kWh {kWh}, kW: {kW}')
         data = (timestamp, battery, kWh, kW)
         db.insert(data)
-        r = requests.post('https://carbon-meter.herokuapp.com/kW-upload', data={'kW': kW})
-        print(r.content)
+        try:
+            r = requests.post('https://carbon-meter.herokuapp.com/kW-upload', data={'kW': kW})
+            print(r.content)
+        except:
+            print('kW upload failed')
         global tries
         tries = 0
 
