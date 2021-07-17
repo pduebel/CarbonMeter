@@ -15,7 +15,7 @@ devices = [
 ];
 
 # Initialise database
-db = DB('energy.db')
+db = DB('/home/pi/Documents/Energy Meter/Raspberry Pi/energy.db')
 db.create_db()
 
 # Gets the actual scanning data  
