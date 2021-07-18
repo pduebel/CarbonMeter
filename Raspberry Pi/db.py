@@ -52,6 +52,8 @@ class DB:
                          battery INTEGER,
                          kWh FLOAT,
                          kW FLOAT
+                         carbon_intensity INTEGER,
+                         
                       );''')
         conn.commit()
         conn.close()
@@ -85,7 +87,7 @@ class DB:
         conn.commit()
         conn.close()
         
-    def post(self, post_url):
+    def post_data(self, post_url):
         '''
         Converts entire energy table to json, creates post request to input url,
         and prints contents of response.
@@ -104,3 +106,6 @@ class DB:
         json = df.to_json()
         r = requests.post(post_url, json=json)
         print(r.content)
+        
+    def get_carbon_intensity():
+        
