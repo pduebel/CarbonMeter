@@ -53,14 +53,27 @@ class ScanDelegate(DefaultDelegate):
         tries = 0
 
 # Start scanning
+
 scanner = Scanner().withDelegate(ScanDelegate())
 scanner.clear()
 scanner.start()
 
 tries = 0
+uploaded = False
 
 # Keep scanning in  10 second chunks
 while True:
+    if (datetime.datetime.now().minute in [0, 15, 30, 45]) and not uploaded:
+        try:
+            db.post('https://carbon-meter.herokuapp.com/data-upload')
+            uploaded = True
+        except Exception as e:
+            print(e)
+            print('JSON upload failed.')
+            
+    elif datetime.datetime.now().minute not in [0, 15, 30, 45]:
+        uploaded = False
+        
     print('Scanning...')
     scanner.process(10)
     tries += 1

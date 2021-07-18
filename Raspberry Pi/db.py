@@ -1,4 +1,6 @@
+import requests
 import sqlite3
+import pandas as pd
 
 class DB:
     '''
@@ -82,3 +84,23 @@ class DB:
                          VALUES (?, ?, ?, ?)''', data)
         conn.commit()
         conn.close()
+        
+    def post(self, post_url):
+        '''
+        Converts entire energy table to json, creates post request to input url,
+        and prints contents of response.
+        
+        Parameters
+        ----------
+        post_url: string
+            Url to submit post request to
+            
+        Returns
+        -------
+        None
+        '''
+        conn = sqlite3.connect(self.db_name)
+        df = pd.read_sql('SELECT * FROM energy', con=conn)
+        json = df.to_json()
+        r = requests.post(post_url, json=json)
+        print(r.content)
