@@ -51,9 +51,9 @@ class DB:
                          timestamp TEXT PRIMARY KEY,
                          battery INTEGER,
                          kWh FLOAT,
-                         kW FLOAT
+                         kW FLOAT,
                          carbon_intensity INTEGER,
-                         
+                         carbon INTEGER
                       );''')
         conn.commit()
         conn.close()
