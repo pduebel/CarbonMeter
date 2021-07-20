@@ -21,9 +21,9 @@ kW = 21
 data = (timestamp, battery, total_kWh, total_kWh, kW)
 
 c.execute('''REPLACE INTO energy (timestamp, battery, total_kWh, kWh, kW)
-                         VALUES (?, ?, ?, (? - (SELECT total_kWh
-                                                FROM energy
-                                                WHERE timestamp = (SELECT MAX(timestamp)
-                                                                   FROM energy))), ?)''', data)
+                 VALUES (?, ?, ?, (? - (SELECT total_kWh
+                                        FROM energy
+                                        WHERE timestamp = (SELECT MAX(timestamp)
+                                                           FROM energy))), ?)''', data)
 conn.commit()
 conn.close()
