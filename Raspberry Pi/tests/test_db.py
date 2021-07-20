@@ -18,6 +18,7 @@ timestamp = timestamp.replace(second=0, microsecond=0)
 battery = 20
 total_kWh = 51
 kW = 21
+
 data = (timestamp, battery, total_kWh, total_kWh, kW)
 
 c.execute('''REPLACE INTO energy (timestamp, battery, total_kWh, kWh, kW)
