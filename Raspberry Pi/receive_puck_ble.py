@@ -80,7 +80,10 @@ while True:
     # restart script if no data received after 5 loops
     if tries >= 5:
         print('Restarting')
-        scanner.stop()
+        try:
+            scanner.stop()
+        except:
+            pass
         sys.stdout.flush()
         os.execv(sys.executable, ['python3'] + sys.argv)
 # in case were wanted to finish, we should call 'stop'
