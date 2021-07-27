@@ -10,6 +10,7 @@ c.execute('''CREATE TABLE IF NOT EXISTS energy (
                          kWh FLOAT,
                          kW FLOAT,
                          carbon_intensity INTEGER,
+                         intensity_index TEXT,
                          carbon INTEGER
                       );''')
 
