@@ -36,7 +36,6 @@ if min_date_str and max_date_str:
         date_to = dates[i + 1]
         r = requests.get(f'https://api.carbonintensity.org.uk/regional/intensity/{date_from}/{date_to}/postcode/{postcode}',
                          headers=headers)
-
         for data_dict in r.json()['data']['data']:
             intensity_dict = {'timestamp': data_dict['from'],
                               'carbon intensity': data_dict['intensity']['forecast'],
@@ -48,7 +47,6 @@ if min_date_str and max_date_str:
         timestamp = dt.datetime.strptime(intensity_dict['timestamp'], '%Y-%m-%dT%H:%MZ')
         from_timestamp = str(timestamp)
         to_timestamp = str(timestamp + dt.timedelta(minutes=30))
-        print(from_timestamp, to_timestamp)
         cur.execute('''UPDATE energy
                        SET
                          carbon_intensity = ?,

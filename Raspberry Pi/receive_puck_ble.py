@@ -65,7 +65,12 @@ uploaded = False
 while True:
     if (datetime.datetime.now().minute in [0, 15, 30, 45]) and not uploaded:
         try:
-            db.post('https://carbon-meter.herokuapp.com/data-upload')
+            db.get_carbon_intensity()
+        except Exception as e:
+            print(e)
+            print('Could not get carbon intensity.')
+        try:
+            db.post_data('https://carbon-meter.herokuapp.com/data-upload')
             uploaded = True
         except Exception as e:
             print(e)
