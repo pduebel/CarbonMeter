@@ -33,7 +33,7 @@ class ScanDelegate(DefaultDelegate):
         rate = int(data[10:], 16)
         
         # Derive power metrics
-        kWh = counter / 1000
+        total_kWh = counter / 1000
         kW = rate / 1000
         
         # Get time info
@@ -41,16 +41,15 @@ class ScanDelegate(DefaultDelegate):
         timestamp = timestamp.replace(second=0, microsecond=0)
         
         # Input to database
-        print (f'Timestamp: {timestamp}, Battery: {battery}, kWh {kWh}, kW: {kW}')
-        data = (timestamp, battery, kWh, kW)
+        print (f'Timestamp: {timestamp}, Battery: {battery}, total_kWh {total_kWh}, kW: {kW}')
+        data = (timestamp, battery, total_kWh, total_kWh, kW)
         db.insert(data)
         try:
             r = requests.post('https://carbon-meter.herokuapp.com/kW-upload', data={'kW': kW})
             print(r.content)
         except:
             print('kW upload failed')
-        global tries
-        tries = 0
+        db.tries = 0
 
 # Start scanning
 
@@ -58,7 +57,6 @@ scanner = Scanner().withDelegate(ScanDelegate())
 scanner.clear()
 scanner.start()
 
-tries = 0
 uploaded = False
 
 # Keep scanning in  10 second chunks
@@ -66,6 +64,7 @@ while True:
     if (datetime.datetime.now().minute in [0, 15, 30, 45]) and not uploaded:
         try:
             db.get_carbon_intensity()
+            print('Carbon intensity added')
         except Exception as e:
             print(e)
             print('Could not get carbon intensity.')
@@ -81,9 +80,9 @@ while True:
         
     print('Scanning...')
     scanner.process(10)
-    tries += 1
+    db.tries += 1
     # restart script if no data received after 5 loops
-    if tries >= 5:
+    if db.tries >= 5:
         print('Restarting')
         sys.stdout.flush()
         os.execv(sys.executable, ['python3'] + sys.argv)

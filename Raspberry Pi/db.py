@@ -32,6 +32,7 @@ class DB:
         '''
             
         self.db_name = db_name
+        self.tries = 0
         
     def create_db(self):
         '''
@@ -86,8 +87,11 @@ class DB:
         
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
-        c.execute('''REPLACE INTO energy (timestamp, battery, kWh, kW)
-                         VALUES (?, ?, ?, ?)''', data)
+        c.execute('''REPLACE INTO energy (timestamp, battery, total_kWh, kWh, kW)
+                     VALUES (?, ?, ?, (? - (SELECT total_kWh
+                                            FROM energy
+                                            WHERE timestamp = (SELECT MAX(timestamp)
+                                                               FROM energy))), ?)''', data)
         conn.commit()
         conn.close()
         
@@ -113,10 +117,24 @@ class DB:
         print(r.content)
         
     def get_carbon_intensity(self):
+        '''
+        Finds min and max times of records that are missing carbon intensity
+        data and gets carbon intensity data (in gCO2/kWh) across this range by
+        querying the National Grid API. Then updates records with this data where
+        missing. Also multiplies kWh by carbon intensity to give gCO2 produced.
         
-        conn = sqlite3.connect(self)
+        Parameters
+        ----------
+        None
+        
+        Returns
+        -------
+        None
+        '''
+        
+        conn = sqlite3.connect(self.db_name)
         cur = conn.cursor()
-
+        # find min and max datetimes that are missing data
         cur.execute('''SELECT
                          MIN(timestamp),
                          MAX(timestamp)
@@ -131,7 +149,9 @@ class DB:
             date_format = '%Y-%m-%d %H:%M:%S'
             min_date = dt.datetime.strptime(min_date_str, date_format)
             max_date = dt.datetime.strptime(max_date_str, date_format) + dt.timedelta(minutes=30)
-    
+            
+            # API can only work in date ranges <14 days - so break the date
+            # range into 13 day chunks
             diff = max_date - min_date
             steps = math.floor(diff / dt.timedelta(days=13))
             dates = [min_date.isoformat(), max_date.isoformat()]
@@ -139,7 +159,8 @@ class DB:
             for i in range(steps):
                 prev_date = prev_date + dt.timedelta(days=13)
                 dates.insert(-1, prev_date.isoformat())
-
+            
+            # loop through 13 day chunks to call API
             intensity_data = []
             for i in range(len(dates) - 1):
                 date_from = dates[i]
@@ -152,7 +173,7 @@ class DB:
                                   'intensity index': data_dict['intensity']['index']}
                 intensity_data.append(intensity_dict)
 
-            # need to use update rather than insert into
+            # add data to db
             for intensity_dict in intensity_data:
                 timestamp = dt.datetime.strptime(intensity_dict['timestamp'],
                                                  '%Y-%m-%dT%H:%MZ')
