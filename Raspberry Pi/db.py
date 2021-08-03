@@ -141,6 +141,7 @@ class DB:
             json = df.to_json()
             r = requests.post(post_url, json=json)
             r.raise_for_status()
+            print('Database uploaded')
             
         except Exception as e:
             print(e)
