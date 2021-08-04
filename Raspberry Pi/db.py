@@ -17,6 +17,7 @@ class DB:
     -------
     create_db():
         Creates sqlite database with energy table.
+        
     insert(data):
         Accepts tuple of data and inserts or replaces into energy table of database.
     '''

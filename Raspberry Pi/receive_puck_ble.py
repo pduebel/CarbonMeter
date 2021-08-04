@@ -19,7 +19,10 @@ db = DB(config['DB_PATH'])
 db.create_db()
         
 # Start scanning
-scanner = Scanner().withDelegate(ScanDelegate())
+scanner = Scanner().withDelegate(ScanDelegate(devices,
+                                              config['IMP/KWH'],
+                                              db,
+                                              config['POST_URL_KW']))
 scanner.clear()
 scanner.start()
 
