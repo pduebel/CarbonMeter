@@ -121,7 +121,7 @@ class DB:
             print(e)
             print('Error inserting data into db')
         
-    def post_data(self, post_url):
+    def post_data(self, post_url, auth):
         '''
         Converts entire energy table to json, creates post request to input url,
         and prints contents of response.
@@ -140,7 +140,8 @@ class DB:
             conn = sqlite3.connect(self.db_name)
             df = pd.read_sql('SELECT * FROM energy', con=conn)
             json = df.to_json()
-            r = requests.post(post_url, json=json)
+            r = requests.post(post_url, json=json, auth=auth)
+            print(r.content)
             r.raise_for_status()
             print('Database uploaded')
             

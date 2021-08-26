@@ -5,4 +5,6 @@ config = {
     'POST_URL_KW': 'https://pimeter.herokuapp.com/kW-upload', # (optional) url to post kW value to
     'POST_URL_DB': 'https://pimeter.herokuapp.com/data-upload', # (optional) url to post db to
     'POSTCODE': 'RH13' # outward part of postcode (first part, UK only)
+    'USERNAME': 'admin' #(optional) username for flask web app
+    'PASSWORD': 'password123' #(optional) password for flask web app
 }

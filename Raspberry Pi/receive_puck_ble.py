@@ -42,7 +42,8 @@ while True:
         # --- optional ---
         # post database to web app as json
         try:
-            db.post_data(config['POST_URL_DB'])
+            auth = (config['USERNAME'], config['PASSWORD'])
+            db.post_data(config['POST_URL_DB'], auth=auth)
             uploaded = True
             print('Data uploaded')
         except Exception as e:
