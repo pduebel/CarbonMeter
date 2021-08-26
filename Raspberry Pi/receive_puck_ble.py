@@ -17,12 +17,17 @@ devices = [config['DEVICE']]
 # Initialise database
 db = DB(config['DB_PATH'])
 db.create_db()
-        
+
+# --- optional ---
+# username and password if using web app
+auth = (config['USERNAME'], config['PASSWORD'])
+
 # Start scanning
 scanner = Scanner().withDelegate(ScanDelegate(devices,
                                               config['IMP/KWH'],
                                               db,
-                                              config['POST_URL_KW']))
+                                              config['POST_URL_KW'],
+                                              auth))
 scanner.clear()
 scanner.start()
 
@@ -42,7 +47,6 @@ while True:
         # --- optional ---
         # post database to web app as json
         try:
-            auth = (config['USERNAME'], config['PASSWORD'])
             db.post_data(config['POST_URL_DB'], auth=auth)
             uploaded = True
             print('Data uploaded')
