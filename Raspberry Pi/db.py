@@ -236,6 +236,7 @@ class DB:
 
             conn.commit()
             conn.close()
+            print('Carbon intensity added')
             
         except Exception as e:
             print(e)

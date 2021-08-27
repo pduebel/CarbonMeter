@@ -40,19 +40,15 @@ while True:
         # get carbon intensity data
         try:
             db.get_carbon_intensity(config['POSTCODE'])
-            print('Carbon intensity added')
         except Exception as e:
             print(e)
-            print('Could not get carbon intensity.')
         # --- optional ---
         # post database to web app as json
         try:
             db.post_data(config['POST_URL_DB'], auth=auth)
             uploaded = True
-            print('Data uploaded')
         except Exception as e:
             print(e)
-            print('Data upload failed.')
             
     elif datetime.datetime.now().minute not in [0, 15, 30, 45]:
         uploaded = False
