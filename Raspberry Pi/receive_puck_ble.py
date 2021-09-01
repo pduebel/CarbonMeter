@@ -26,6 +26,7 @@ auth = (config['USERNAME'], config['PASSWORD'])
 scanner = Scanner().withDelegate(ScanDelegate(devices,
                                               config['IMP/KWH'],
                                               db,
+                                              config['WEB_APP'],
                                               config['POST_URL_KW'],
                                               auth))
 scanner.clear()
@@ -36,19 +37,18 @@ uploaded = False
 # Keep scanning in  10 second chunks
 while True:
     # every 15 mins add carbon intensity data and upload data to web app (optional)
-    if (datetime.datetime.now().minute in [0, 15, 30, 45]) and not uploaded:
-        # get carbon intensity data
+    if (datetime.datetime.now().minute in [0, 15, 23, 24, 30, 45]) and not uploaded:
         try:
+            # get carbon intensity data
             db.get_carbon_intensity(config['POSTCODE'])
-        except Exception as e:
-            print(e)
-        # --- optional ---
-        # post database to web app as json
-        try:
-            db.post_data(config['POST_URL_DB'], auth=auth)
+            # --- optional ---
+            # post database to web app as json
+            if config['WEB_APP']:
+                db.post_data(config['POST_URL_DB'], auth=auth)
             uploaded = True
         except Exception as e:
             print(e)
+            uploaded = False
             
     elif datetime.datetime.now().minute not in [0, 15, 30, 45]:
         uploaded = False

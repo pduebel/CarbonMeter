@@ -34,7 +34,7 @@ class ScanDelegate(DefaultDelegate):
         kW to url for display in web app (optional).
     '''
     
-    def __init__(self, devices, imp_kwh, db, post_url_kw, auth):
+    def __init__(self, devices, imp_kwh, db, web_app, post_url_kw, auth):
         '''
         Constructs attributes of ScanDelegate object.       
         '''
@@ -42,6 +42,7 @@ class ScanDelegate(DefaultDelegate):
         self.devices = devices
         self.imp_kwh = imp_kwh
         self.db = db
+        self.web_app = web_app
         # --- optional ---
         # for use with web app
         self.post_url_kw = post_url_kw
@@ -82,11 +83,12 @@ class ScanDelegate(DefaultDelegate):
                 self.db.tries = 0
                 # --- optional ---
                 # post current usage to web app
-                try:
-                    r = requests.post(self.post_url_kw, data={'kW': kW}, auth=self.auth)
-                    print(r.content)
-                    r.raise_for_status()
-                    print('kW uploaded')
-                except Exception as e:
-                    print(e)
+                if self.web_app:
+                    try:
+                        r = requests.post(self.post_url_kw, data={'kW': kW}, auth=self.auth)
+                        print(r.content)
+                        r.raise_for_status()
+                        print('kW uploaded')
+                    except Exception as e:
+                        print(e)
                     print('kW upload failed')
