@@ -18,6 +18,12 @@ devices = [config['DEVICE']]
 db = DB(config['DB_PATH'])
 db.create_db()
 
+if not config['WEB_APP']:
+    config['POST_URL_DB'] = None
+    config['POST_URL_KW'] = None
+    config['USERNAME'] = None
+    config['PASSWORD'] = None
+
 # --- optional ---
 # username and password if using web app
 auth = (config['USERNAME'], config['PASSWORD'])
@@ -37,7 +43,7 @@ uploaded = False
 # Keep scanning in  10 second chunks
 while True:
     # every 15 mins add carbon intensity data and upload data to web app (optional)
-    if (datetime.datetime.now().minute in [0, 15, 23, 24, 30, 45]) and not uploaded:
+    if (datetime.datetime.now().minute in [0, 15, 30, 45]) and not uploaded:
         try:
             # get carbon intensity data
             db.get_carbon_intensity(config['POSTCODE'])
