@@ -91,4 +91,4 @@ class ScanDelegate(DefaultDelegate):
                         print('kW uploaded')
                     except Exception as e:
                         print(e)
-                    print('kW upload failed')
+                        print('kW upload failed')
