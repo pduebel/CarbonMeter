@@ -40,11 +40,11 @@ The data recorded by the Raspberry Pi is posted to a simple web app for easy vie
 Once you have your Raspberry Pi set up with Raspbian installed, download the files from the github repository using the following commands:
 ```
 sudo apt-get install git
-https://github.com/pduebel/pi-carbon-energy-meter.git
+git clone https://github.com/pduebel/pi-carbon-energy-meter.git
 ```
 Then to install the project dependencies:
 ```
-cd pi-carbon-energy-meter
+cd 'pi-carbon-energy-meter/Raspberry Pi'
 pip3 install -r requirements.txt
 ```
 Before you're able to run anything, you'll first need to set up your config file. To do this open the `example-config.py` file in the `\Raspberry Pi` directory and set the config variables to the desired values. Save the new config file as `config.py` in the same directory.
@@ -53,4 +53,4 @@ Once you have everything set up and you're ready to run, do so using the followi
 ```
 sudo python3 receive_puck_ble.py
 ```
-**Note:** The script won't be able to access the Raspberry Pi's BLE unless the it is run using `sudo`, which will cause it to fail.
+**Note:** The script won't be able to access the Raspberry Pi's BLE unless the it is run using `sudo`.
