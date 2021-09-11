@@ -1,7 +1,8 @@
 import datetime as dt
 import math
-import requests
 import sqlite3
+
+import requests
 import pandas as pd
 
 class DB:

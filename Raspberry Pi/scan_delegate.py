@@ -1,7 +1,8 @@
 import datetime
-import requests
 
+import requests
 from bluepy.btle import DefaultDelegate
+
 from config import config
 
 
