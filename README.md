@@ -1,6 +1,8 @@
 # pi-carbon-energy-meter
 Monitor electricity meter to record electricity consumption and calculate associated CO2 produced (CO2 data for UK only), using Raspberry Pi and Espruino microcontroller, with results displayed using Flask web app (optional).
 
+**Related repository:** [carbon-meter-website](https://github.com/pduebel/carbon-meter-website 'Web app repository')
+
 ## Background
 For this project I was interested in quantifying the amount of CO2 that is produced as a result of my electricity consumption, with an aim to help minimise my environmental impact in this area. This presented a couple of challenges. Firstly, I do not have a smart meter, so don't have easy access to my electricity consumption data (and if I did I suspect I would not be able to get a real-time data feed). Secondly, the amount of CO2 produced by the grid at any one time can change due to variations in demand and weather leading to changes in the mix of renewable and non-renewable energy sources supplying the grid with electricity. I had also never worked with microcontrollers or a Raspberry Pi before, so this seemed like a great opportunity to experiment with them.
 
