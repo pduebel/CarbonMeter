@@ -42,12 +42,13 @@ Once you have your Raspberry Pi set up with Raspbian installed, download the fil
 sudo apt-get install git
 git clone https://github.com/pduebel/pi-carbon-energy-meter.git
 ```
-Then to install the project dependencies:
+Then to install the project dependencies, first install `libglib2.0-dev` (required for `bluepy`), then install the packages listed in `requirements.txt`:
 ```
+sudo apt-get install libglib2.0-dev
 cd 'pi-carbon-energy-meter/Raspberry Pi'
-pip3 install -r requirements.txt
+sudo pip3 install -r requirements.txt
 ```
-Before you're able to run anything, you'll first need to set up your config file. To do this open the `example-config.py` file in the `\Raspberry Pi` directory and set the config variables to the desired values. Save the new config file as `config.py` in the same directory.
+Before you're able to run anything, you'll first need to set up your config file. To do this open the `example-config.py` file in the `/Raspberry Pi` directory and set the config variables to the desired values. Save the new config file as `config.py` in the same directory.
 
 Once you have everything set up and you're ready to run, do so using the following command:
 ```
