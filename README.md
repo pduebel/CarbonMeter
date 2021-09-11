@@ -34,6 +34,9 @@ The data recorded by the Raspberry Pi is posted to a simple web app for easy vie
 * Raspberry Pi with BLE and WiFi connectivity (this project used a Zero W)
 * Puck.js Espruino microcontroller
 * Light dependent resistor (this project used GL5537)
+* Soldering equipment (optional - I managed to attach the LDR without soldering)
+* Blutack or double-sided tape
+* Drill or something similar to make a hole in the case of the Puck.js
 
 ### Raspberry Pi
 
@@ -48,10 +51,36 @@ sudo apt-get install libglib2.0-dev
 cd 'pi-carbon-energy-meter/Raspberry Pi'
 sudo pip3 install -r requirements.txt
 ```
-Before you're able to run anything, you'll first need to set up your config file. To do this open the `example-config.py` file in the `/Raspberry Pi` directory and set the config variables to the desired values. Save the new config file as `config.py` in the same directory.
+Before you're able to run anything, you'll first need to set up your config file. To do this open the `example-config.py` file in the `/Raspberry Pi` directory and set the config variables to the desired values (see section below for getting the MAC address for the Puck.js). Save the new config file as `config.py` in the same directory.
 
-Once you have everything set up and you're ready to run, do so using the following command:
+To test that the BLE scanner is working or check that the Puck.js is advertising data, use the `test_ble_scanner.py` script in the `/tests` directory.
+Run this from within the `/Raspberry Pi` directory using the command:
+```
+sudo python3 tests/test_ble_scanner.py
+```
+This will list all of the devices and associated advertisements detected up by the Raspberry Pi.
+
+Once you have the Puck.js and Raspberry Pi set up and you're ready to run, do so using the following command:
 ```
 sudo python3 receive_puck_ble.py
 ```
 **Note:** The script won't be able to access the Raspberry Pi's BLE unless the it is run using `sudo`.
+
+### Puck.js
+
+This project largely follows the method in the [Espruino DIY Smart Meter Tutorial](https://www.youtube.com/watch?v=_SsZ3zILFn8&ab_channel=Espruino 'Espruino tutorial') (with a modification to the code and without the dashboard) and it's recommended that you use this for a clear, visual guide to setting up the Puck.js.
+
+To summarise, you want to attach the LDR to the D1 and D2 pins either through soldering or bending the wires of the LDR. Then, cut/drill a hole in the plastic back to the Puck.js case to allow the LDR to poke through.
+
+Next, load the `puck-meter.js` file from the `/Puck.js` directory of the repository onto the Puck.js. The easiest way to do this is using the [Espruino Web IDE](https://www.espruino.com/ide/ 'Espruino Web IDE') which requires a computer that has Web Bluetooth available and a compatible browser. Before loading the file you may want to use this opportunity to get the MAC address for the Puck.js which you can do by using the following command in the IDE:
+```
+NRF.getAddress()
+```
+
+For more details and troubleshooting for setting up the Puck.js, read the [quick start guide](https://www.espruino.com/Quick+Start+BLE#puckjs 'Puck.js quick start guide') or [documentation](https://www.espruino.com/Puck.js 'Puck.js documentation') on the Espruino website.
+
+When the Puck.js is all set up, attach it to the front of the electricity meter with the Blutack or double-sided tape with the LDR positioned over the LED.
+
+### Web app (optional)
+
+The code and set up instructions for the optional web app can be found in this [repository](https://github.com/pduebel/carbon-meter-website 'Web app repository').
