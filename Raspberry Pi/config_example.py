@@ -1,5 +1,5 @@
 config = {
-    'DEVICE': 'h7:04:7a:c2:27:10', # ip address of puck
+    'DEVICE': 'h7:04:7a:c2:27:10', # MAC address of puck
     'DB_PATH': '/home/pi/energy.db', # filepath to database
     'IMP/KWH': 1000, # can find this next to led on meter, usually 800 or 1000
     'POSTCODE': 'RH13', # outward part of postcode (first part, UK only)
