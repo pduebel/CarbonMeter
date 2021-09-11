@@ -72,7 +72,7 @@ This project largely follows the method in the [Espruino DIY Smart Meter Tutoria
 
 To summarise, you want to attach the LDR to the D1 and D2 pins either through soldering or bending the wires of the LDR. Then, cut/drill a hole in the plastic back to the Puck.js case to allow the LDR to poke through.
 
-Next, load the `puck-meter.js` file from the `/Puck.js` directory of the repository onto the Puck.js. The easiest way to do this is using the [Espruino Web IDE](https://www.espruino.com/ide/ 'Espruino Web IDE') which requires a computer that has Web Bluetooth available and a compatible browser. Before loading the file you may want to use this opportunity to get the MAC address for the Puck.js which you can do by using the following command in the IDE:
+Next, load the `puck-meter.js` file from the `/Puck.js` directory of the repository onto the Puck.js. The easiest way to do this is using the [Espruino Web IDE](https://www.espruino.com/ide/ 'Espruino Web IDE') which requires a computer that has Web Bluetooth available and a compatible browser; make sure to go into the Web IDE settings, `Communications` and check that `Set Current Time` is ticked. Before loading the file you may want to use this opportunity to get the MAC address for the Puck.js which you can do by using the following command in the IDE:
 ```
 NRF.getAddress()
 ```
