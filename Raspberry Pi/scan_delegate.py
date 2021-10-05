@@ -79,7 +79,7 @@ class ScanDelegate(DefaultDelegate):
         
                 # Input to database
                 print (f'Timestamp: {timestamp}, Battery: {battery}, total_kWh {total_kWh}, kW: {kW}')
-                data = (timestamp, battery, total_kWh, total_kWh, kW)
+                data = (timestamp, battery, total_kWh, kW)
                 self.db.insert(data)
                 self.db.tries = 0
                 # --- optional ---

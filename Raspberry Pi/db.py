@@ -92,6 +92,15 @@ class DB:
         '''
         
         try:
+            timestamp, battery, total_kWh, kW = data
+            data_for_insert = (
+                timestamp,
+                battery,
+                total_kWh,
+                total_kWh,
+                timestamp,
+                kW
+            )
             conn = sqlite3.connect(self.db_name)
             c = conn.cursor()
             c.execute('''REPLACE INTO energy (
@@ -111,10 +120,11 @@ class DB:
                                WHERE timestamp = (
                                    SELECT MAX(timestamp)
                                    FROM energy
+                                   WHERE timestamp != ?
                                )
                            )),
                            ?)''',
-                      data)
+                      data_for_insert)
             conn.commit()
             conn.close()
             
